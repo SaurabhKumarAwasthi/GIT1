@@ -1,0 +1,190 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject RoleManager<IdentityRole> _roleManager
+@inject UserManager<POC_UserManagementInterface.Areas.Identity.Data.ApplicationInterfaceUser> _usermanager
+@model IEnumerable<POC_UserManagementInterface.Areas.Identity.Data.ApplicationInterfaceUser>
+@{
+    ViewData["Title"] = "ListUsers";
+ Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<a asp-action="Register" asp-controller="Register"
+   class="btn btn-info btn-primary" style="width:auto;margin-bottom:20px">
+    Add New User
+</a>
+<br />
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title text-warning">User List</h3>
+    </div>
+    @if (User.IsInRole("Admin"))
+    {
+
+        <div class="card-body p-0">
+            <table class="table table-striped projects table-hover .table-bordered ">
+                <thead>
+                    <tr>
+                        @*<th style="width: 1%">
+                                #
+                            </th>*@
+                        <th style="width: 20%">
+                            First Name
+                        </th>
+                        <th style="width: 30%">
+                            Last Name
+                        </th>
+                        <th style="width: 20%">
+                            Email
+                        </th>
+                        <th style="width: 20%">
+                            Role
+                        </th>
+                        <th style="width: 20%">
+
+                        </th>
+
+                    </tr>
+                </thead>
+                @foreach (var user in Model)
+                {
+                    var empty = "No Roles Assigned";
+                    var roles = await _usermanager.GetRolesAsync(user);
+                    <tbody>
+                        <tr>
+                            @*<td>
+                                    #
+                                </td>*@
+                            <td>
+                                <a>
+                                    @user.FirstName
+                                </a>
+                            </td>
+                            <td>
+                                <a>
+                                    @user.LastName
+                                </a>
+                            </td>
+                            <td>
+                                <a>
+                                    @user.Email
+                                </a>
+                            </td>
+
+                            @if (roles.Any())
+                            {
+                                @foreach (var role in roles)
+                                {
+
+
+                                    <td>@role</td>
+                                }
+                            }
+                            else
+                            {
+                                <td>@empty</td>
+
+                            }
+
+
+                            <td class="project-actions text-right">
+                                <a asp-controller="Register" asp-action="EditUser"
+                                   asp-route-id="@user.Id" class="btn btn-info btn-sm">
+                                    <i class="fas fa-pencil-alt">
+                                    </i>
+                                    Edit
+                                </a>
+                            </td>
+                            <td>
+                                <form method="post" asp-action="DeleteUser" asp-route-id="@user.Id">
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure want to delete user: @user.Email')">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                }
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="card-body p-0">
+            <table class="table table-striped projects">
+                <thead>
+                    <tr>
+                        @*<th style="width: 1%">
+                                #
+                            </th>*@
+                        <th style="width: 20%">
+                            First Name
+                        </th>
+                        <th style="width: 30%">
+                            Last Name
+                        </th>
+                        <th style="width: 20%">
+                            Email
+                        </th>
+                        <th style="width: 20%">
+                            Role
+                        </th>
+                        
+
+                    </tr>
+                </thead>
+                @foreach (var user in Model)
+                {
+                    var empty = "Guest User";
+                    var roles = await _usermanager.GetRolesAsync(user);
+                    <tbody>
+                        <tr>
+                            @*<td>
+                                    #
+                                </td>*@
+                            <td>
+                                <a>
+                                    @user.FirstName
+                                </a>
+                            </td>
+                            <td>
+                                <a>
+                                    @user.LastName
+                                </a>
+                            </td>
+                            <td>
+                                <a>
+                                    @user.Email
+                                </a>
+                            </td>
+
+                            @if (roles.Any())
+                            {
+                                @foreach (var role in roles)
+                                {
+
+
+                                    <td>@role</td>
+                                }
+                            }
+                            else
+                            {
+                                <td>@empty</td>
+
+                            }
+
+
+                            
+                           
+                        </tr>
+                    </tbody>
+                }
+            </table>
+        </div>
+
+    }
+
+</div>
+
+
+
+
+

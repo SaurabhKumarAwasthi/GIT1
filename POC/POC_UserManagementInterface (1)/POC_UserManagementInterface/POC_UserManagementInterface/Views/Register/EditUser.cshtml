@@ -1,0 +1,90 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model POC_UserManagementInterface.ViewModel.EditUserViewModel;
+
+@{
+    ViewBag.Title = "Edit User";
+}
+
+<form method="post" class="mt-3">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card card-warning">
+                <div class="card-header ">
+                    <h3 class="card-title text-warning">Edit User</h3>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label asp-for="Email"></label>
+                                <input asp-for="Email" class="form-control" disabled>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label asp-for="FirstName">First Name</label>
+                                <input asp-for="FirstName" class="form-control">
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="LastName">Last Name</label>
+                                <input asp-for="LastName" class="form-control">
+                            </div>
+                        </div>
+
+                    </div>
+                   
+
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                </div>
+                <div class="card-footer">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-info btn-sm">Update</button>
+                            <a asp-action="ListUsers" class="btn btn-info btn-sm">Save</a>
+                            <a asp-action="ListUsers" class="btn btn-info btn-danger btn-sm">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title text-warning">User Roles</h3>
+                </div>
+                <div class="card-body">
+                    @if (Model.Roles.Any())
+                    {
+                        foreach (var role in Model.Roles)
+                        {
+                            <h5 class="card-title">@role</h5>
+                        }
+                    }
+                    else
+                    {
+                        <h5 class="card-title">None at the moment</h5>
+                    }
+                </div>
+                <div class="card-footer">
+                    <a asp-action="ManageUserRoles" asp-route-userId="@Model.Id"
+                       class="btn btn-info btn-sm">
+                        Manage Roles
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+</form>
+
